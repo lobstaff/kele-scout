@@ -23,9 +23,16 @@ Just tell your assistant:
 
 > 帮我安装球星撞型 / install the football lookalike skill
 
-The agent `git clone`s this repo into its local skills directory
-(`~/.hermes/skills/kele-scout/`, persisted on the pod volume). Nothing is baked
-into the base image — it's **opt-in, per assistant**.
+Behind the scenes the assistant registers this repo as a skill source and
+installs it via Hermes' native skill manager:
+
+```
+hermes skills tap add lobstaff/kele-scout
+hermes skills install kele-scout
+```
+
+It installs into the assistant's own skills directory (persisted on its
+volume) — **opt-in, per assistant**, not baked into the base image.
 
 ## How it works
 

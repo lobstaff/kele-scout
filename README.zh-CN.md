@@ -19,9 +19,15 @@
 
 > 帮我安装球星撞型
 
-助手会把本仓库 `git clone` 到它的本地 skill 目录
-（`~/.hermes/skills/kele-scout/`，存在 pod 持久卷上）。**不烤进基础镜像、按需
-安装、每个助手独立开通**。
+助手会用 Hermes 原生 skill 管理器，把本仓库注册为 skill 源并安装：
+
+```
+hermes skills tap add lobstaff/kele-scout
+hermes skills install kele-scout
+```
+
+安装到助手自己的 skill 目录（存在持久卷上）——**按需安装、每个助手独立开通、
+不烤进基础镜像**。
 
 ## 工作原理
 
