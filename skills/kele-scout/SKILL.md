@@ -47,6 +47,8 @@ description: Use when the user sends a face selfie and wants to know which footb
 | `--ruping` | 是 | 一句中文锐评（≤40 字最佳，会印在卡上） |
 | `--tone` | 否 | `adult`(默认) / `minor`(友善模式，卡面也会用阳光青春风) |
 
+> 卡片**固定输出 2:3 竖版（1024×1536）**——比例由脚本锁定，不接受比例参数，不要尝试改成方形或横版。
+
 ## 失败兜底
 
 - gpt-image-2 偶发限流（org 级共享），脚本已内置重试；若最终仍失败，脚本退出非零并打印原因——这时**先把文字锐评发给用户**，告诉他"球员卡稍后重试一下"。

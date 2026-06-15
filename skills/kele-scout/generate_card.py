@@ -21,6 +21,8 @@ FALLBACK_FONT = "/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc"
 FONT_CACHE = os.path.expanduser("~/.cache/kele-scout/fonts")  # ~ = /opt/data (PVC) in pod
 CARD_DIR = os.path.expanduser("~/.cache/kele-scout/cards")
 
+# 卡片比例固定 2:3 竖版（gpt-image-2 原生支持的竖版尺寸，无裁剪/无黑边；勿改）
+CARD_SIZE = "1024x1536"
 MATCH_MIN, MATCH_MAX = 50, 99
 RUPING_MAX_CHARS = 44   # 软上限：超出截断，防卡面越界
 RUPING_MAX_LINES = 3
@@ -69,7 +71,7 @@ def gen_card_art(features, tone, key, base):
         "NO text, NO logos, NO watermark, a generic non-identifiable person"
     )
     payload = json.dumps({"model": "gpt-image-2", "prompt": prompt,
-                          "size": "1024x1536", "n": 1}).encode()
+                          "size": CARD_SIZE, "n": 1}).encode()
     last = None
     for attempt in range(1, 4):
         try:
