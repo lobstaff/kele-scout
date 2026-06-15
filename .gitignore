@@ -1,0 +1,10 @@
+# 内部设计文档（含测试 pod / 内网路径），不进公开 repo
+DESIGN.md
+
+# Python
+__pycache__/
+*.pyc
+
+# 本地缓存 / 字体（运行时自动下载）
+.cache/
+*.otf
