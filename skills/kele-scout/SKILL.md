@@ -3,7 +3,7 @@ name: kele-scout
 description: Use when the user sends a face selfie and wants to know which football (soccer) star they resemble, or asks for a "球星撞型 / 球星锐评 / 我像哪个球星" trading card. Produces a shareable football trading-card poster with a roast.
 ---
 
-# Kele 球探 — 球星撞型锐评
+# KeleClaw 球探 — 球星撞型锐评
 
 把用户的一张自拍，变成一张可分享的「球星撞型」球员卡：判断他最像哪位足球明星，配一句毒舌锐评，渲染成 FIFA 风格球员卡发回去。
 

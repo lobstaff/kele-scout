@@ -1,6 +1,6 @@
 [English](README.md) | [中文](README.zh-CN.md)
 
-# Kele 球探 · 球星撞型锐评卡
+# KeleClaw 球探 · 球星撞型锐评卡
 
 一个 [Hermes](https://github.com/lobstaff) agent skill:发一张自拍，助手告诉你
 最像哪位**足球明星**，配一句毒舌锐评，渲染成一张 **FIFA 风格球员卡**直接发回对话。

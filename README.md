@@ -1,6 +1,6 @@
 [English](README.md) | [中文](README.zh-CN.md)
 
-# Kele Scout · Football Lookalike Trading Card
+# KeleClaw Scout · Football Lookalike Trading Card
 
 A [Hermes](https://github.com/lobstaff) agent skill: send a selfie, and the
 assistant tells you which **football (soccer) star** you resemble, writes a

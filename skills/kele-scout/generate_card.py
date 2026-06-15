@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Kele 球探 — 球星撞型卡渲染器。
+KeleClaw 球探 — 球星撞型卡渲染器。
 
 在 Hermes pod 内由 agent 调用：agent 看图判断撞型球星/特征/锐评后，
 传文字参数进来，本脚本调 gpt-image-2 出「神似致敬」卡面 + PIL 叠精确文字，
@@ -140,7 +140,7 @@ def compose(card_bytes, star, position, match, ruping, heavy, bold, out_path):
         return lines
 
     # 顶部品牌标牌
-    pf = fb(40); title = "Kele 球探 · 球星撞型"; pw = tw(title, pf)
+    pf = fb(40); title = "KeleClaw 球探 · 球星撞型"; pw = tw(title, pf)
     d.rounded_rectangle([(W-pw)/2-44, 34, (W+pw)/2+44, 106], radius=36,
                         fill=(6, 16, 12, 215), outline=GOLD, width=3)
     center(title, pf, 48, GOLD)
@@ -172,7 +172,7 @@ def compose(card_bytes, star, position, match, ruping, heavy, bold, out_path):
     for ln in wrap(ruping, bf, W-150, RUPING_MAX_LINES):
         d.text((x, by), ln, font=bf, fill=WHITE, stroke_width=1, stroke_fill=(0, 0, 0))
         by += 60
-    center("Kele 球探  ·  AI 球星撞型锐评", fb(30), H-78, GRAY)
+    center("KeleClaw 球探  ·  AI 球星撞型锐评", fb(30), H-78, GRAY)
 
     out = Image.alpha_composite(base, ov).convert("RGB")
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
