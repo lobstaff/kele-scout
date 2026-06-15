@@ -138,6 +138,20 @@ def compose(card_bytes, star, position, match, ruping, heavy, bold, out_path):
         if cur and len(lines) < max_lines:
             lines.append(cur)
         return lines
+    def fit_font(text, factory, start, max_w, min_size=46):
+        """在 max_w 宽度内自动缩放字号；缩到最小仍放不下则省略号截断。
+        返回 (font, size, 实际要画的文本) —— 保证画出来不越界。"""
+        sz = start
+        f = factory(sz)
+        while sz > min_size and tw(text, f) > max_w:
+            sz -= 4
+            f = factory(sz)
+        if tw(text, f) <= max_w:
+            return f, sz, text
+        t = text
+        while t and tw(t + "…", f) > max_w:
+            t = t[:-1]
+        return f, sz, (t + "…")
 
     # 顶部品牌标牌
     pf = fb(40); title = "KeleClaw 球探 · 球星撞型"; pw = tw(title, pf)
@@ -151,28 +165,42 @@ def compose(card_bytes, star, position, match, ruping, heavy, bold, out_path):
         a = int(238 * (y - ptop) / (H - ptop))
         d.line([0, y, W, y], fill=(4, 12, 9, min(a, 238)))
 
-    x = 72; y = ptop + 56
+    MARGIN = 72
+    x = MARGIN; y = ptop + 56
     d.text((x, y), "你的撞型球星", font=fb(34), fill=GRAY)
     y += 48
-    d.text((x-2, y), star, font=fh(118), fill=WHITE, stroke_width=3, stroke_fill=(140, 96, 12))
-    # 位置 chip
+
+    # 右侧「撞型指数」块：靠右对齐到右边距，先排好以算出左边界给名字让位
+    idx_lab_f, num_f, pct_f = fb(34), fh(104), fh(44)
+    num_s = str(match)
+    num_w, pct_w = tw(num_s, num_f), tw("%", pct_f)
+    idx_w = max(tw("撞型指数", idx_lab_f), num_w + 6 + pct_w)
+    idx_x = W - MARGIN - idx_w
+    d.text((idx_x, y + 8),  "撞型指数", font=idx_lab_f, fill=GRAY)
+    d.text((idx_x, y + 44), num_s, font=num_f, fill=GOLD, stroke_width=2, stroke_fill=(90, 60, 6))
+    d.text((idx_x + num_w + 6, y + 100), "%", font=pct_f, fill=GOLD)
+
+    # 球星名：在「左边距 → 指数块左侧」可用宽度内自动缩放，永不顶进指数区
+    name_max_w = idx_x - x - 36
+    name_f, name_sz, name_text = fit_font(star, fh, 118, name_max_w, min_size=46)
+    d.text((x - 2, y), name_text, font=name_f, fill=WHITE, stroke_width=3, stroke_fill=(140, 96, 12))
+
+    # 位置 chip：贴在名字实际底部下方（随字号自适应，不再写死偏移）
+    name_bottom = y + int(name_sz * 1.18)
     cf = fb(36); cw = tw(position, cf)
-    d.rounded_rectangle([x, y+148, x+cw+48, y+148+62], radius=31, fill=GOLD)
-    d.text((x+24, y+157), position, font=cf, fill=INK)
-    # 撞型指数（match 已在 main clamp 到两位数，宽度可控）
-    ix = W - 326
-    d.text((ix, y+8), "撞型指数", font=fb(34), fill=GRAY)
-    d.text((ix, y+44), str(match), font=fh(104), fill=GOLD, stroke_width=2, stroke_fill=(90, 60, 6))
-    d.text((ix + tw(str(match), fh(104)) + 8, y+102), "%", font=fh(44), fill=GOLD)
-    # 锐评
-    ry = y + 244
+    chip_top = name_bottom + 12
+    d.rounded_rectangle([x, chip_top, x + cw + 48, chip_top + 62], radius=31, fill=GOLD)
+    d.text((x + 24, chip_top + 9), position, font=cf, fill=INK)
+
+    # 球探锐评（位置随 chip 底部走，避免和上方挤）
+    ry = chip_top + 62 + 34
     d.text((x, ry), "★ 球探锐评", font=fb(40), fill=GOLD)
-    d.line([x, ry+58, W-72, ry+58], fill=(247, 206, 88, 130), width=2)
+    d.line([x, ry + 58, W - MARGIN, ry + 58], fill=(247, 206, 88, 130), width=2)
     by = ry + 80; bf = fb(42)
-    for ln in wrap(ruping, bf, W-150, RUPING_MAX_LINES):
+    for ln in wrap(ruping, bf, W - 2 * MARGIN, RUPING_MAX_LINES):
         d.text((x, by), ln, font=bf, fill=WHITE, stroke_width=1, stroke_fill=(0, 0, 0))
         by += 60
-    center("KeleClaw 球探  ·  AI 球星撞型锐评", fb(30), H-78, GRAY)
+    center("KeleClaw 球探  ·  AI 球星撞型锐评", fb(30), H - 78, GRAY)
 
     out = Image.alpha_composite(base, ov).convert("RGB")
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
